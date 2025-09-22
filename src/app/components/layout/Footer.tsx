@@ -59,7 +59,7 @@ export function Footer() {
         borderColor: "var(--color-border)",
       }}
     >
-      <div className="container py-6 flex flex-col gap-4">
+      <div className="container py-6 mx-auto flex flex-col gap-4">
         {/* Top grid */}
         <div className="flex flex-wrap gap-8 xl:gap-4 justify-between align-middle">
           {/* Brand + blurb */}
