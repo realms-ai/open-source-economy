@@ -9,7 +9,7 @@
 
   /* Paragraph alignment: base = justify */
   p {
-    @apply text-justify md:text-center px-8 md:px-16 xl:px-96;
+    @apply text-justify md:text-center px-16;
   }
 
   /* Breakpoints: tweak only what changes */
@@ -27,7 +27,7 @@
 
   @media (min-width: theme(screens.xl)) {
     body {
-      @apply text-2xl px-32;
+      @apply text-lg px-32;
     }
   }
 
@@ -114,7 +114,6 @@ body {
   margin-right: calc(50% - 50vw);
   width: 100vw;
 }
-
-p {
-  @apply px-8 md:px-16;
+.para {
+  @apply px-8 md:px-16 xl:px-48;
 }

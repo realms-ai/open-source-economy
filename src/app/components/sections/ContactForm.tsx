@@ -242,23 +242,17 @@ export function ContactForm() {
     <section className="bg-[var(--color-background)]">
       <div className="flex flex-col gap-4 md:gap-8 xl:gap-16">
         <h2
-          className="text-center text-white"
-          style={{
-            fontFamily: "Sora, ui-sans-serif, system-ui",
-            fontWeight: 400,
-            fontSize: "clamp(2rem, 4.5vw, 4rem)",
-            lineHeight: 1.2,
-          }}
+          className="text-center text-white text-3xl sm:text-4xl md:text-5xl xl:text-7xl"
         >
           Don’t Wait For The Next Breach
         </h2>
-        <p className="leading-[150%] text-[var(--color-muted)]">
+        <p className="leading-[150%] text-[var(--color-muted)] xl:px-28 2xl:px-56">
           We’re here to support your business. Whether you want to learn more about our services,
           explore collaboration opportunities, or need guidance, our team is ready to help you
           strengthen your open source security.
         </p>
 
-        <div className="">
+        <div className="xl:px-56 2xl:px-96">
           {/* Swap content based on status */}
           {status?.ok === true ? (
             <SuccessCard onReset={resetToForm} />
@@ -266,7 +260,7 @@ export function ContactForm() {
             <ErrorCard message={status.msg} onReset={resetToForm} />
           ) : (
             <div
-              className="rounded-[16px] border p-6 backdrop-blur flex flex-col gap-4 md:gap-8 xl:gap-16"
+              className="rounded-[16px] border p-6 backdrop-blur flex flex-col gap-4 md:gap-8"
               style={{
                 background: "var(--color-card)",
                 borderColor: "var(--color-border)",
@@ -278,11 +272,11 @@ export function ContactForm() {
               >
                 Get In Touch
               </div>
-              <p className="leading-[150%] text-white">
+              <p className="leading-[150%] text-white px-0 xl:text-left">
                 This is so that we can get in contact with you in case any opportunity comes up
               </p>
 
-              <form className="mt-5 grid gap-4" onSubmit={onSubmit} noValidate>
+              <form className="grid gap-4" onSubmit={onSubmit} noValidate>
                 {/* Honeypot (hidden) */}
                 <input
                   type="text"
@@ -295,7 +289,7 @@ export function ContactForm() {
                   aria-hidden="true"
                 />
 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 xl:grid-cols-2">
                   <label htmlFor="name" className="text-sm text-white">
                     <span className="block">Your Full Name*</span>
                     <input

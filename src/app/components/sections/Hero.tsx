@@ -9,12 +9,12 @@ export function Hero() {
         <div className="flex flex-col items-center gap-6 text-center">
           <h1
             id="hero-title"
-            className="font-normal leading-tight text-3xl sm:text-4xl md:text-5xl xl:text-6xl"
+            className="font-normal leading-tight text-3xl sm:text-4xl md:text-5xl xl:text-7xl"
           >
             What’s The Cost Of Using Open Source Blindly?
           </h1>
 
-          <p className="text-white/85 leading-relaxed">
+          <p className="text-white/85 leading-relaxed para">
             Open source is powerful — but it also opens the door to supply chain attacks.
             Too often, essential libraries are maintained by just a handful of volunteers
             without the resources to keep them secure.

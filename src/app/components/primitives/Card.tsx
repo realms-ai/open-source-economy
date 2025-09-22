@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import Image from "next/image";
-import { useMediaQuery } from "react-responsive";
+import clsx from "clsx";
 
 type StatCardProps = {
 
@@ -29,7 +29,7 @@ function renderWithHighlights(v: string | React.ReactNode, enable: boolean) {
 export function StatCard({
   iconSrc,
   iconAlt = "",
-  iconSize = 24,
+  iconSize = 36,
   heading,
   text,
   items,
@@ -38,13 +38,13 @@ export function StatCard({
   enableInlineHighlights = false,
 }: StatCardProps) {
   const isList = Array.isArray(items) && items.length > 0;
-  const isLg = useMediaQuery({ minWidth: 1280 });
-  const alignCls = (align === "center" || !isLg) ? "text-center" : "text-left";
+  const alignCls = align === "left" ? "text-center xl:text-left" : "text-center";
+
 
   return (
-    <div className={`${alignCls} ${className}`}>
+    <div className={clsx(alignCls, className, "flex flex-col gap-2 xl:gap-4")}>
       {iconSrc && (
-        <div className={align === "center" ? "mx-auto mb-2" : "mb-2"}>
+        <div className={clsx(align === "center" && "mx-auto")}>
           <Image
             src={iconSrc}
             alt={iconAlt}
@@ -57,27 +57,24 @@ export function StatCard({
       )}
 
       {heading !== undefined && (
-        <div className="text-[#FF518C] leading-[1.2] text-4xl md:text-5xl">
+        <div className="text-[#FF518C] leading-[1.2] text-4xl md:text-4xl">
           {heading}
         </div>
       )}
 
       {!isList && text && (
         <p
-          className={`${(align === "center" || !isLg) ? "mx-auto" : ""} mt-2
-                      font-[var(--font-roboto,_Roboto,system-ui)]
-                      text-white/90 leading-relaxed
-                      max-w-[26ch] md:max-w-[34ch]`}
+          className={clsx("lg:mx-auto", "text-white/90 leading-relaxed")}
         >
           {renderWithHighlights(text, enableInlineHighlights)}
         </p>
       )}
 
       {isList && (
-        <ul className="mt-3 space-y-6 text-white/90">
+        <ul className="text-white/90 flex flex-col gap-2 xl:gap-4">
           {items!.map((it, i) => (
-            <li key={i} className="flex gap-2 justify-center xl:justify-start">
-              <span className="min-w-0">
+            <li key={i} className="flex justify-center xl:justify-start">
+              <span className="xl:text-xl">
                 {renderWithHighlights(it, enableInlineHighlights)}
               </span>
             </li>

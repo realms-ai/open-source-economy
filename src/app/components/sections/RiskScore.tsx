@@ -43,21 +43,17 @@ export function RiskScore({
 }) {
   return (
     <section className="bg-[#00102A]">
-      <div className="">
+      <div className="flex flex-col gap-8">
         <h2
           className="text-center text-white leading-[1.2] tracking-tight
                        text-3xl sm:text-4xl md:text-5xl lg:text-[64px]"
-          style={{
-            fontFamily: "Sora, ui-sans-serif, system-ui",
-            fontWeight: 400
-          }}
         >
           Let Us Protect You
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 xl:gap-10 xl:grid-cols-3">
+        <div className="grid grid-cols-1 xl:gap-10 xl:grid-cols-3">
 
-          <div className="space-y-10 md:col-span-2">
+          <div className="flex flex-col gap-12 2xl:gap-36 md:col-span-2">
             <Step
               n="01"
               title="We Analyze"
@@ -83,7 +79,6 @@ export function RiskScore({
                 src={cardSrc}
                 alt={cardAlt}
                 fill
-
                 className="object-contain"
                 sizes="(min-width: 768px) 33vw, 100vw"
                 priority={false}

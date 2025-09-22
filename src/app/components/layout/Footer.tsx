@@ -4,11 +4,15 @@
 import * as React from "react";
 import Link from "next/link";
 import { Linkedin, Github, Twitter } from "lucide-react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
+const logoSrc = "/open-source-logo.png";
 export function Footer() {
   const [email, setEmail] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
   const [status, setStatus] = React.useState<null | { ok: boolean; msg: string; }>(null);
+  const pathname = usePathname();
 
   async function onSubscribe(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -42,28 +46,35 @@ export function Footer() {
 
   return (
     <footer
-      className="border-t max-w-screen-2xl mx-auto"
+      className="border-t mx-auto"
       style={{
         background: "var(--color-background)",
         borderColor: "var(--color-border)",
       }}
     >
-      <div className="container py-12">
+      <div className="container py-6 flex flex-col gap-4">
         {/* Top grid */}
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
+        <div className="flex flex-wrap gap-8 xl:gap-4 justify-between align-middle">
           {/* Brand + blurb */}
-          <div className="space-y-4">
+          <div className="space-y-4 w-full xl:w-2/5 ">
             <div className="flex items-center gap-3">
-              <span
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                style={{ backgroundImage: "var(--grad-cta)" }}
-                aria-hidden="true"
-              />
-              <span className="text-sm font-semibold tracking-wide text-white">Open Source Economy</span>
+              <span className="relative block w-14 h-10 md:w-20 md:h-14">
+                <Image
+                  src={logoSrc}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 40px, 56px"
+                  className="object-contain"
+                  priority={pathname === "/"}
+                />
+              </span>
+              <span className="text-white text-sm md:text-lg xl:text-2xl text-left flex flex-col">
+                <span className="whitespace-nowrap">Open Source</span>
+                <span>Economy</span>
+              </span>
             </div>
-            <p className="text-sm leading-relaxed text-white/90">
-              Open Source Economy is a non-profit organization dedicated to helping developers keep
-              contributing to open source while receiving funding for their projects.
+            <p className="text-xs leading-relaxed text-white/90 px-0 text-left">
+              Open Source Economy is a non-profit organization dedicated to helping developers keep contributing to open source while receiving funding for their projects.
             </p>
           </div>
 
@@ -88,61 +99,64 @@ export function Footer() {
           </div>
 
           {/* Social + Newsletter */}
-          <div>
-            <div className="flex items-center gap-3 text-white/80">
+          <div className="flex flex-col gap-4 min-w-full md:min-w-3/5 xl:min-w-0">
+            <div className="flex flex-row justify-center gap-8 text-white/80">
               <Link href="#" aria-label="LinkedIn" className="hover:text-white"><Linkedin className="h-5 w-5" /></Link>
               <Link href="#" aria-label="X" className="hover:text-white"><Twitter className="h-5 w-5" /></Link>
               <Link href="#" aria-label="GitHub" className="hover:text-white"><Github className="h-5 w-5" /></Link>
             </div>
 
-            <div className="mt-6 text-sm font-semibold text-white">Newsletter</div>
+            <div>
+              <div className="text-sm font-semibold text-white">Newsletter</div>
 
-            <form className="mt-3 flex gap-2" onSubmit={onSubscribe} noValidate>
-              <label className="sr-only" htmlFor="footer-email">Email</label>
-              <input
-                id="footer-email"
-                type="email"
-                inputMode="email"
-                autoComplete="email"
-                placeholder="Enter your email"
-                className="w-full rounded-xl border bg-[var(--color-input)] px-3 py-2 text-sm text-white outline-none placeholder:text-white/50"
-                style={{ borderColor: "var(--color-border)" }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <form className="flex gap-2" onSubmit={onSubscribe} noValidate>
+                <label className="sr-only" htmlFor="footer-email">Email</label>
+                <div className="relative w-full">
+                  <input
+                    id="footer-email"
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder="Enter your email"
+                    className="w-full rounded-xl border bg-[var(--color-input)] px-3 py-4 pr-[110px] text-sm text-white outline-none placeholder:text-white/50"
+                    style={{ borderColor: "var(--color-border)" }}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
 
-              {/* gradient submit */}
-              <button
-                type="submit"
-                disabled={submitting}
-                className="inline-flex min-w-[120px] items-center justify-center rounded-xl px-4 py-2 text-sm font-medium text-white transition-opacity disabled:opacity-60"
-                style={{ backgroundImage: "var(--grad-cta)" }}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg px-4 py-1.5 text-sm font-medium text-white transition-opacity disabled:opacity-60"
+                    style={{ backgroundImage: "var(--grad-cta)" }}
+                  >
+                    {submitting ? "…" : "Subscribe"}
+                  </button>
+                </div>
+              </form>
+
+              <div
+                role="status"
+                aria-live="polite"
+                className={`mt-2 min-h-5 text-xs ${status ? (status.ok ? "text-emerald-400" : "text-red-400") : "text-transparent"
+                  }`}
               >
-                {submitting ? "Subscribing..." : "Subscribe"}
-              </button>
-            </form>
-
-            <div
-              role="status"
-              aria-live="polite"
-              className={`mt-2 min-h-5 text-xs ${status ? (status.ok ? "text-emerald-400" : "text-red-400") : "text-transparent"
-                }`}
-            >
-              {status?.msg || "placeholder"}
+                {status?.msg || "placeholder"}
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-10 border-t pt-6" style={{ borderColor: "var(--color-border)" }}>
+        <div className="border-t pt-6" style={{ borderColor: "var(--color-border)" }}>
           <div className="flex flex-col items-start justify-between gap-4 text-xs text-white/90 md:flex-row md:items-center">
             <div>
               © Open Source Economy — Non profit organisation · CHE-440.055.692 · Switzerland
             </div>
-            <div className="flex items-center gap-3">
+            <div className="w-full flex flex-row justify-center md:justify-end gap-3">
               <Link href="#" className="hover:text-white">Terms Of Service</Link>
-              <span className="hidden h-4 w-px bg-white/60 md:inline-block" />
+              <span className="h-4 w-px bg-white/60 md:inline-block" />
               <Link href="#" className="hover:text-white">Privacy Policy</Link>
             </div>
           </div>

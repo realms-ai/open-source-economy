@@ -24,7 +24,7 @@ export function Nav({
   ];
 
   return (
-    <header className="sticky top-0 z-30 bg-[#00102A] shadow-sm supports-[backdrop-filter]:backdrop-blur max-w-screen-2xl mx-auto pb-2"
+    <header className="sticky top-0 z-30 bg-[#00102A] shadow-sm supports-[backdrop-filter]:backdrop-blur max-w-screen-2xl mx-auto pb-2 pt-4"
     >
       <div className="h-16 flex items-center justify-between gap-2">
 
