@@ -1,0 +1,28 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+
+}
+model Subscription {
+  id        BigInt   @id @default(autoincrement())
+  email     String   @unique
+  status    String   @default("subscribed")
+  createdAt DateTime @default(now()) @map("created_at")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String   @db.VarChar(200)
+  email     String   @unique
+  linkedin  String?  @db.VarChar(300)
+  message   String   @db.Text
+  ip        String?  @db.VarChar(45) // ipv6
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

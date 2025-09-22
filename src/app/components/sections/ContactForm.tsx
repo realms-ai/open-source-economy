@@ -7,7 +7,7 @@ type FormState = {
   email: string;
   linkedin: string;
   message: string;
-  honeypot: string; // spam trap
+
 };
 
 // Success card
@@ -22,9 +22,8 @@ function SuccessCard({ onReset }: { onReset: () => void; }) {
       role="status"
       aria-live="polite"
     >
-      {/* Top row */}
-      <div className="flex items-center gap-[0.01px]">
-        {/* 40x40 check icon in a subtle ring */}
+
+      <div className="flex items-center gap-2">
         <span
           className="inline-flex h-10 w-10 items-center justify-center rounded-full"
           style={{ border: "2px solid var(--color-brand-pink, #FF8AB2)" }}
@@ -42,15 +41,15 @@ function SuccessCard({ onReset }: { onReset: () => void; }) {
           </svg>
         </span>
 
-        {/* Text block with left padding 12px */}
+
         <div className="pl-3">
-          <div className="space-y-1">
+          <div className="flex flex-col gap-4">
             <h3
               className="m-0"
               style={{
                 fontFamily: "Sora, ui-sans-serif, system-ui",
                 fontWeight: 400,
-                fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)", // ~28→40
+                fontSize: "clamp(1.75rem, 3.2vw, 2.5rem)",
                 lineHeight: 1.2,
                 color: "var(--color-brand-pink, #FF518C)",
               }}
@@ -58,9 +57,8 @@ function SuccessCard({ onReset }: { onReset: () => void; }) {
               Form Received!
             </h3>
             <p
-              className="text-sm md:text-base"
+              className="text-sm md:text-base text-left px-0"
               style={{
-                fontFamily: "Roboto, system-ui",
                 color: "var(--color-muted, #F5F7FA)",
               }}
             >
@@ -109,7 +107,7 @@ function ErrorCard(
       role="alert"
       aria-live="assertive"
     >
-      {/* Close (optional) */}
+
       <div className="flex justify-end">
         <button
           type="button"
@@ -123,7 +121,6 @@ function ErrorCard(
         </button>
       </div>
 
-      {/* Icon, title, description */}
       <div className="mx-auto max-w-[464px] space-y-4">
         <div className="flex justify-center">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
@@ -154,19 +151,20 @@ function ErrorCard(
         </h3>
 
         <p
-          className="mx-auto max-w-[348px] text-center"
-          style={{ fontFamily: "Roboto, system-ui", fontSize: "16px", lineHeight: "150%", color: "#FFFFFF" }}
+          className="mx-auto max-w-[348px] text-center text-white px-0"
         >
           We couldn’t process your request at the moment. Please check your connection and try again later.
         </p>
 
         {/* Inline error strip */}
         <div className="rounded-[8px] border px-4 py-3" style={{ background: "rgba(239,68,68,0.1)", borderColor: "var(--color-border)" }}>
-          <div className="flex items-center justify-center gap-2 text-center">
-            <span className="inline-block h-2 w-2 rounded-full" style={{ background: "#FF0000" }} />
-            <span className="text-sm" style={{ color: "#FF0000", fontFamily: "Roboto, system-ui" }}>
-              Error Code: {code}
-            </span>
+          <div className="flex items-center justify-around gap-2 text-center">
+            <div className="flex flex-row gap-2 items-center">
+              <span className="inline-block h-2 w-2 rounded-full" style={{ background: "#FF0000" }} />
+              <span className="text-sm" style={{ color: "#FF0000", fontFamily: "Roboto, system-ui" }}>
+                Error Code: {code}
+              </span>
+            </div>
             <span className="text-sm" style={{ color: "#FF0000", fontFamily: "Roboto, system-ui" }}>
               {message}
             </span>
@@ -195,7 +193,7 @@ export function ContactForm() {
     email: "",
     linkedin: "",
     message: "",
-    honeypot: "",
+
   });
   const [isSubmitting, setSubmitting] = React.useState(false);
   const [status, setStatus] = React.useState<null | { ok: boolean; msg: string; }>(null);
@@ -223,14 +221,18 @@ export function ContactForm() {
       });
 
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
+        type ErrorPayload = { error?: string; };
+
+        const data = (await res.json().catch(() => ({}))) as ErrorPayload;
         throw new Error(data?.error || `Server Unavailable (${res.status})`);
       }
 
       setStatus({ ok: true, msg: "Thanks! We’ll be in touch shortly." });
-      setForm({ name: "", email: "", linkedin: "", message: "", honeypot: "" });
-    } catch (err: any) {
-      setStatus({ ok: false, msg: err?.message || "Failed to send message." });
+      setForm({ name: "", email: "", linkedin: "", message: "" });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to send message.";
+
+      setStatus({ ok: false, msg });
     } finally {
       setSubmitting(false);
     }
@@ -276,18 +278,8 @@ export function ContactForm() {
                 This is so that we can get in contact with you in case any opportunity comes up
               </p>
 
-              <form className="grid gap-4" onSubmit={onSubmit} noValidate>
-                {/* Honeypot (hidden) */}
-                <input
-                  type="text"
-                  name="company"
-                  autoComplete="off"
-                  tabIndex={-1}
-                  className="hidden"
-                  value={form.honeypot}
-                  onChange={(e) => setForm((f) => ({ ...f, honeypot: e.target.value }))}
-                  aria-hidden="true"
-                />
+              <form className="mt-5 grid gap-4" onSubmit={onSubmit} noValidate>
+
 
                 <div className="grid gap-4 xl:grid-cols-2">
                   <label htmlFor="name" className="text-sm text-white">

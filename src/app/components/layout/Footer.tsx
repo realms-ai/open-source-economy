@@ -1,9 +1,7 @@
-// app/components/layout/Footer.tsx
 "use client";
 
 import * as React from "react";
 import Link from "next/link";
-import { Linkedin, Github, Twitter } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -14,12 +12,16 @@ export function Footer() {
   const [status, setStatus] = React.useState<null | { ok: boolean; msg: string; }>(null);
   const pathname = usePathname();
 
+  const emailOk = React.useMemo(
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()),
+    [email]
+  );
+
   async function onSubscribe(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus(null);
 
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!ok) {
+    if (!emailOk) {
       setStatus({ ok: false, msg: "Please enter a valid email." });
       return;
     }
@@ -29,16 +31,21 @@ export function Footer() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        // normalize email casing/whitespace
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
+
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         throw new Error(data?.error || "Subscription failed. Try again.");
       }
+
       setStatus({ ok: true, msg: "Thanks! Please check your inbox to confirm." });
       setEmail("");
-    } catch (err: any) {
-      setStatus({ ok: false, msg: err.message || "Something went wrong." });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong.";
+
+      setStatus({ ok: false, msg: message });
     } finally {
       setSubmitting(false);
     }
@@ -101,9 +108,11 @@ export function Footer() {
           {/* Social + Newsletter */}
           <div className="flex flex-col gap-4 min-w-full md:min-w-3/5 xl:min-w-0">
             <div className="flex flex-row justify-center gap-8 text-white/80">
-              <Link href="#" aria-label="LinkedIn" className="hover:text-white"><Linkedin className="h-5 w-5" /></Link>
-              <Link href="#" aria-label="X" className="hover:text-white"><Twitter className="h-5 w-5" /></Link>
-              <Link href="#" aria-label="GitHub" className="hover:text-white"><Github className="h-5 w-5" /></Link>
+              <Link href="#" aria-label="LinkedIn" className="hover:text-white">
+                <Image src="/icons/linkedin.png" alt="LinkedIn" width={20} height={20} />
+              </Link>
+              <Link href="#" aria-label="X" className="hover:text-white">  <Image src="/icons/x.png" alt="X (Twitter)" width={20} height={20} /></Link>
+              <Link href="#" aria-label="Youtube" className="hover:text-white"><Image src="/icons/youtube.png" alt="Youtube" width={20} height={20} /></Link>
             </div>
 
             <div>

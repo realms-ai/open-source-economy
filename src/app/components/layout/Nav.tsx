@@ -1,4 +1,3 @@
-// components/layout/Nav.tsx
 "use client";
 
 import Link from "next/link";
@@ -11,7 +10,6 @@ export function Nav({
   logoSrc = "/open-source-logo.png",
 }: {
   logoSrc?: string;
-  brand?: string;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
