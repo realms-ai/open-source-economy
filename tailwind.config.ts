@@ -10,18 +10,22 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-
         sans: ["var(--font-sora)", "ui-sans-serif", "system-ui"],
         roboto: ["var(--font-roboto)", "Roboto", "system-ui"],
       },
       colors: {
-        bg: "var(--bg-page)",
-        dim: "var(--text-dim)",
-        subtle: "var(--text-subtle)",
-        accent: "var(--accent)",
+        background: "var(--color-background)",
+        foreground: "var(--color-foreground)",
+        subtle: "var(--color-muted)",
+        dim: "var(--color-muted-weak)",
+        accent: "var(--color-accent)",
+        border: "var(--color-border)",
+        input: "var(--color-input)",
       },
       backgroundImage: {
-        "hi": "linear-gradient(135deg, var(--grad-hi-from), var(--grad-hi-to))",
+        hi: "linear-gradient(135deg, var(--grad-hi-from), var(--grad-hi-to))",
+        cta: "var(--grad-cta)",
+        brand: "var(--grad-brand)",
       },
       container: {
         center: true,
@@ -37,4 +41,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;
