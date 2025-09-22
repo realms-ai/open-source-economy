@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #00102a; /* page spec */
+  --foreground: #ffffff;
+  --text-dim: #d2d2d3; /* CTA text */
+  --text-subtle: #f5f7fa; /* subtitle */
+  --accent: #ff518c;
+
+  --grad-hi-from: #f0abfc; /* fuchsia-300~400 */
+  --grad-hi-to: #67e8f9; /* cyan-300~400 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* fonts */
+  --font-sans: var(--font-sora); /* default = Sora */
+  --font-roboto: var(--font-roboto); /* opt-in utility below */
+
+  --brand-pink: #ff518c;
+  --border-dim: rgba(255, 255, 255, 0.1);
+  --grad-cta: linear-gradient(90deg, #ff518c 0%, #5c3994 100%);
+  --grad-brand: linear-gradient(
+    90deg,
+    #ffaa67 0.03%,
+    #ff7e7a 21.02%,
+    #ff518c 46.02%,
+    #5e309c 100%
+  );
+  --color-muted: #f5f7fa;
+  --color-muted-weak: #d2d2d3;
+  --color-card: rgba(0, 16, 42, 0.6);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-input: #001331;
+  --color-brand-pink: #ff518c;
+  --color-brand-purple: #5c3994;
+
+  --font-header: var(--font-sora);
+  --font-body: var(--font-roboto);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #00102a;
+    --foreground: #ffffff;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.font-roboto {
+  font-family: var(--font-roboto), var(--font-sans);
+}
+.full-bleed {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
 }
