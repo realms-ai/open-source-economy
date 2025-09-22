@@ -1,5 +1,43 @@
 @import "tailwindcss";
 
+@layer base {
+  /* Keep body to typography + spacing only (no text-align here) */
+  body {
+    @apply font-sans antialiased bg-background text-foreground
+           text-base px-4;
+  }
+
+  /* Paragraph alignment: base = justify */
+  p {
+    @apply text-justify md:text-center px-8 md:px-16 xl:px-96;
+  }
+
+  /* Breakpoints: tweak only what changes */
+  @media (min-width: theme(screens.sm)) {
+    body {
+      @apply text-lg;
+    }
+  }
+
+  @media (min-width: theme(screens.md)) {
+    body {
+      @apply text-xl px-8;
+    }
+  }
+
+  @media (min-width: theme(screens.xl)) {
+    body {
+      @apply text-2xl px-32;
+    }
+  }
+
+  @media (min-width: theme(screens.2xl)) {
+    body {
+      @apply px-64;
+    }
+  }
+}
+
 /* ---------- Design tokens ---------- */
 :root {
   /* Core colors */
@@ -75,4 +113,8 @@ body {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   width: 100vw;
+}
+
+p {
+  @apply px-8 md:px-16;
 }

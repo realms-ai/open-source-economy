@@ -7,21 +7,21 @@ export function Log4Shell() {
     <div className=" bg-[var(--background)]">
       <section
         aria-labelledby="log4shell-title"
-        className="mx-auto max-w-[1224px] px-4 sm:px-6 lg:px-10 py-8 md:py-16"
+        className="mx-auto"
       >
         {/* Title + subtitle */}
         <div className="flex flex-col items-center gap-6 text-center">
           <h2
             id="log4shell-title"
             className="font-sans font-normal leading-[1.2] tracking-tight
-                       text-3xl sm:text-4xl md:text-5xl lg:text-[64px]"
+                       text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
           >
-            Do You Remember
-            <span className="bg-hi bg-clip-text text-transparent">Log4Shell</span>
+            Do You Remember&nbsp;
+            <span className="bg-hi bg-clip-text text-[#FF518C]">Log4Shell</span>
             ?
           </h2>
 
-          <p className="max-w-[720px] font-roboto text-[18px] leading-[150%] text-subtle">
+          <p className="leading-[150%] text-subtle">
             In December 2021, Log4Shell (CVE-2021-44228) exposed millions of Java-based
             systems worldwide. A single logging library triggered a global cybersecurity
             crisis with catastrophic consequences.
@@ -29,7 +29,7 @@ export function Log4Shell() {
         </div>
 
         {/* Cards */}
-        <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-8 xl:gap-32 xl:grid-cols-3 text-center">
           <StatCard
             iconSrc="/descriptionPage/icons/money-loss.png"
             iconAlt="Reputational impact"
@@ -69,7 +69,7 @@ export function Log4Shell() {
           />
         </div>
 
-        <p className="mt-8 text-center font-roboto text-sm text-dim">
+        <p className="mt-8 text-center font-roboto text-dim underline xl:no-underline">
           Don’t let your organization be the next case study.
         </p>
       </section>

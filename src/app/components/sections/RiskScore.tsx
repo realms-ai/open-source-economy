@@ -12,33 +12,21 @@ function Step({
 }) {
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-baseline gap-3">
+      <div className="flex items-baseline gap-3 justify-center xl:justify-start">
         <span
-          className="text-[#FF8AB2]"
-          style={{
-            fontFamily: "Sora, ui-sans-serif, system-ui",
-            fontSize: "clamp(2rem, 4.5vw, 3rem)", // 32→48
-            lineHeight: 1,
-            fontWeight: 400,
-          }}
+          className="text-[#FF8AB2] text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
         >
           {n}
         </span>
         <h3
-          className="text-white"
-          style={{
-            fontFamily: "Sora, ui-sans-serif, system-ui",
-            fontSize: "clamp(1.75rem, 4vw, 3rem)", // 28→48
-            lineHeight: 1.2,
-            fontWeight: 400,
-          }}
+          className="text-white leading-[1.2] tracking-tight
+                       text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
         >
           {title}
         </h3>
       </div>
       <p
-        className="max-w-prose text-base text-white/90 md:text-lg"
-        style={{ fontFamily: "Roboto, system-ui" }}
+        className="text-white/90 xl:text-left xl:!px-0"
       >
         {desc}
       </p>
@@ -55,20 +43,19 @@ export function RiskScore({
 }) {
   return (
     <section className="bg-[#00102A]">
-      <div className="mx-auto max-w-[1352px] px-6 py-16 md:px-10 md:py-24">
+      <div className="">
         <h2
-          className="text-center text-white"
+          className="text-center text-white leading-[1.2] tracking-tight
+                       text-3xl sm:text-4xl md:text-5xl lg:text-[64px]"
           style={{
             fontFamily: "Sora, ui-sans-serif, system-ui",
-            fontWeight: 400,
-            fontSize: "clamp(2rem, 4.5vw, 4rem)",
-            lineHeight: 1.2,
+            fontWeight: 400
           }}
         >
           Let Us Protect You
         </h2>
 
-        <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 xl:gap-10 xl:grid-cols-3">
 
           <div className="space-y-10 md:col-span-2">
             <Step

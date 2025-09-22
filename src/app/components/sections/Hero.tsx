@@ -4,28 +4,24 @@ import { StatCard } from "../primitives/Card";
 export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="bg-[#00102A] text-white">
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-10 md:py-14">
+      <div className="flex flex-col gap-8">
 
         <div className="flex flex-col items-center gap-6 text-center">
           <h1
             id="hero-title"
-            className="font-[var(--font-sora,_Sora,sans-serif)] font-normal leading-tight
-                       text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+            className="font-normal leading-tight text-3xl sm:text-4xl md:text-5xl xl:text-6xl"
           >
             What’s The Cost Of Using Open Source Blindly?
           </h1>
 
-          <p
-            className="font-[var(--font-roboto,_Roboto,system-ui)] text-white/85
-                       text-base md:text-lg leading-relaxed max-w-prose"
-          >
+          <p className="text-white/85 leading-relaxed">
             Open source is powerful — but it also opens the door to supply chain attacks.
             Too often, essential libraries are maintained by just a handful of volunteers
             without the resources to keep them secure.
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8">
           <StatCard
             iconSrc="/descriptionPage/icons/companies.png"
             iconAlt="Companies"

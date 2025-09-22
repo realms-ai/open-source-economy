@@ -239,8 +239,8 @@ export function ContactForm() {
   const resetToForm = () => setStatus(null);
 
   return (
-    <section className="w-full bg-[var(--color-background)]">
-      <div className="mx-auto w-full max-w-[1352px] px-6 pb-20 pt-10 md:pt-14">
+    <section className="bg-[var(--color-background)]">
+      <div className="flex flex-col gap-4 md:gap-8 xl:gap-16">
         <h2
           className="text-center text-white"
           style={{
@@ -252,13 +252,13 @@ export function ContactForm() {
         >
           Don’t Wait For The Next Breach
         </h2>
-        <p className="mx-auto mt-3 max-w-[720px] text-center text-[18px] leading-[150%] text-[var(--color-muted)]">
+        <p className="leading-[150%] text-[var(--color-muted)]">
           We’re here to support your business. Whether you want to learn more about our services,
           explore collaboration opportunities, or need guidance, our team is ready to help you
           strengthen your open source security.
         </p>
 
-        <div className="mx-auto mt-10 w-full max-w-[512px]">
+        <div className="">
           {/* Swap content based on status */}
           {status?.ok === true ? (
             <SuccessCard onReset={resetToForm} />
@@ -266,7 +266,7 @@ export function ContactForm() {
             <ErrorCard message={status.msg} onReset={resetToForm} />
           ) : (
             <div
-              className="rounded-[16px] border p-6 backdrop-blur"
+              className="rounded-[16px] border p-6 backdrop-blur flex flex-col gap-4 md:gap-8 xl:gap-16"
               style={{
                 background: "var(--color-card)",
                 borderColor: "var(--color-border)",
@@ -274,17 +274,11 @@ export function ContactForm() {
               }}
             >
               <div
-                className="text-white"
-                style={{
-                  fontFamily: "Sora, ui-sans-serif, system-ui",
-                  fontSize: "40px",
-                  lineHeight: 1.2,
-                  fontWeight: 400,
-                }}
+                className="text-white text-3xl text-center xl:text-left"
               >
                 Get In Touch
               </div>
-              <p className="mt-1 text-[20px] leading-[150%] text-white">
+              <p className="leading-[150%] text-white">
                 This is so that we can get in contact with you in case any opportunity comes up
               </p>
 

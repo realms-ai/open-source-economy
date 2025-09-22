@@ -42,7 +42,7 @@ export function Footer() {
 
   return (
     <footer
-      className="border-t"
+      className="border-t max-w-screen-2xl mx-auto"
       style={{
         background: "var(--color-background)",
         borderColor: "var(--color-border)",

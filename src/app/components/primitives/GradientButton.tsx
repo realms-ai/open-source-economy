@@ -24,7 +24,7 @@ export function GradientButton({
     className;
 
   const containerStyle: React.CSSProperties = {
-    width: 140,
+    width: "clamp(140px, 22vw, 220px)",
     height: 44,
     borderRadius: 12,
     background: "linear-gradient(90deg, #FF518C 0%, #5C3994 100%)",

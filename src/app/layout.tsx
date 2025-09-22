@@ -12,9 +12,9 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
   return (
     <html lang="en" className={`${sora.variable} ${roboto.variable}`}>
       {/* Pulls colors from CSS vars; no hard-coded hex */}
-      <body className="bg-background text-foreground font-sans antialiased">
+      <body>
         <Nav />
-        <main>{children}</main>
+        {children}
         <Footer />
       </body>
     </html>

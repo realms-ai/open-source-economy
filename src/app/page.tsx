@@ -34,20 +34,14 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className={`${sora.className}min-h-screen text-white`}>
-
-
+    <main className={`${sora.className} min-h-screen text-white max-w-screen-2xl mx-auto flex flex-col gap-1 md:gap-4 xl:gap-32 mt-4 md:mt-8 xl:mt-32`}>
       <Hero />
+      <hr className="border-t border-gray-300 my-8 xl:hidden" />
       <Log4Shell />
-
-
+      <hr className="border-t border-gray-300 my-8 xl:hidden" />
       <RiskScore />
-
-
+      <hr className="border-t border-gray-300 my-8 xl:hidden" />
       <ContactForm />
-
-
-
     </main>
   );
 };
