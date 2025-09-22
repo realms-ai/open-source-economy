@@ -28,7 +28,7 @@ export function Nav({
     <header className="sticky top-0 z-30 bg-[#00102A] shadow-sm supports-[backdrop-filter]:backdrop-blur"
     >
 
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-2 lg:px-8">
         <div className="h-16 flex items-center justify-between">
 
           <Link href="/" className="flex items-center gap-3">
