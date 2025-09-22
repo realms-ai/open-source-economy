@@ -1,21 +1,24 @@
-// app/components/layout/Footer.tsx
 "use client";
 
 import * as React from "react";
 import Link from "next/link";
-import { Linkedin, Github, Twitter } from "lucide-react";
+import Image from "next/image";
 
 export function Footer() {
   const [email, setEmail] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
   const [status, setStatus] = React.useState<null | { ok: boolean; msg: string; }>(null);
 
+  const emailOk = React.useMemo(
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()),
+    [email]
+  );
+
   async function onSubscribe(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus(null);
 
-    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!ok) {
+    if (!emailOk) {
       setStatus({ ok: false, msg: "Please enter a valid email." });
       return;
     }
@@ -25,16 +28,21 @@ export function Footer() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        // normalize email casing/whitespace
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
+
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         throw new Error(data?.error || "Subscription failed. Try again.");
       }
+
       setStatus({ ok: true, msg: "Thanks! Please check your inbox to confirm." });
       setEmail("");
-    } catch (err: any) {
-      setStatus({ ok: false, msg: err.message || "Something went wrong." });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Something went wrong.";
+
+      setStatus({ ok: false, msg: message });
     } finally {
       setSubmitting(false);
     }
@@ -51,7 +59,7 @@ export function Footer() {
       <div className="container py-12">
         {/* Top grid */}
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4">
-          {/* Brand + blurb */}
+
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <span
@@ -59,7 +67,9 @@ export function Footer() {
                 style={{ backgroundImage: "var(--grad-cta)" }}
                 aria-hidden="true"
               />
-              <span className="text-sm font-semibold tracking-wide text-white">Open Source Economy</span>
+              <span className="text-sm font-semibold tracking-wide text-white">
+                Open Source Economy
+              </span>
             </div>
             <p className="text-sm leading-relaxed text-white/90">
               Open Source Economy is a non-profit organization dedicated to helping developers keep
@@ -90,9 +100,11 @@ export function Footer() {
           {/* Social + Newsletter */}
           <div>
             <div className="flex items-center gap-3 text-white/80">
-              <Link href="#" aria-label="LinkedIn" className="hover:text-white"><Linkedin className="h-5 w-5" /></Link>
-              <Link href="#" aria-label="X" className="hover:text-white"><Twitter className="h-5 w-5" /></Link>
-              <Link href="#" aria-label="GitHub" className="hover:text-white"><Github className="h-5 w-5" /></Link>
+              <Link href="#" aria-label="LinkedIn" className="hover:text-white">
+                <Image src="/icons/linkedin.png" alt="LinkedIn" width={20} height={20} />
+              </Link>
+              <Link href="#" aria-label="X" className="hover:text-white">  <Image src="/icons/x.png" alt="X (Twitter)" width={20} height={20} /></Link>
+              <Link href="#" aria-label="Youtube" className="hover:text-white"><Image src="/icons/youtube.png" alt="Youtube" width={20} height={20} /></Link>
             </div>
 
             <div className="mt-6 text-sm font-semibold text-white">Newsletter</div>
@@ -101,33 +113,39 @@ export function Footer() {
               <label className="sr-only" htmlFor="footer-email">Email</label>
               <input
                 id="footer-email"
+                name="email"
                 type="email"
                 inputMode="email"
                 autoComplete="email"
                 placeholder="Enter your email"
-                className="w-full rounded-xl border bg-[var(--color-input)] px-3 py-2 text-sm text-white outline-none placeholder:text-white/50"
+                className={`w-full rounded-xl border bg-[var(--color-input)] px-3 py-2 text-sm text-white outline-none placeholder:text-white/50
+                  ${status && !status.ok ? "border-red-400/60" : ""}`}
                 style={{ borderColor: "var(--color-border)" }}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (status) setStatus(null);
+                }}
+                aria-invalid={Boolean(status && !status.ok)}
                 required
               />
 
-              {/* gradient submit */}
               <button
                 type="submit"
                 disabled={submitting}
                 className="inline-flex min-w-[120px] items-center justify-center rounded-xl px-4 py-2 text-sm font-medium text-white transition-opacity disabled:opacity-60"
                 style={{ backgroundImage: "var(--grad-cta)" }}
+                aria-busy={submitting}
               >
                 {submitting ? "Subscribing..." : "Subscribe"}
               </button>
             </form>
 
             <div
+              id="footer-subscribe-status"
               role="status"
               aria-live="polite"
-              className={`mt-2 min-h-5 text-xs ${status ? (status.ok ? "text-emerald-400" : "text-red-400") : "text-transparent"
-                }`}
+              className={`mt-2 min-h-5 text-xs ${status ? (status.ok ? "text-emerald-400" : "text-red-400") : "text-transparent"}`}
             >
               {status?.msg || "placeholder"}
             </div>

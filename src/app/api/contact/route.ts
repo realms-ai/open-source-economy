@@ -1,59 +1,84 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "../../../../lib/prisma";
 
-const WINDOW_MS = 60_000; // 1 minute
-const MAX_HITS = 5;
-const hits = new Map<string, { count: number; start: number; }>();
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
-export async function POST(req: Request) {
+type ContactBody = {
+  name: string;
+  email: string;
+  message: string;
+  linkedin?: string;
+};
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function getClientIp(req: NextRequest): string {
+  const xff = req.headers.get("x-forwarded-for");
+  if (xff) {
+    const first = xff.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  const xri = req.headers.get("x-real-ip");
+  if (xri) return xri.trim();
+  const cf = req.headers.get("cf-connecting-ip");
+  if (cf) return cf.trim();
+  return "anonymous";
+}
+
+export async function POST(req: NextRequest) {
+  // Parse JSON safely to the expected shape
+  let body: Partial<ContactBody> = {};
   try {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      (req as any).ip ||
-      "anonymous";
+    body = (await req.json()) as Partial<ContactBody>;
+  } catch {
+    return NextResponse.json({ error: "Bad JSON body." }, { status: 400 });
+  }
 
-    // Rate limit
-    const now = Date.now();
-    const rec = hits.get(ip);
-    if (!rec || now - rec.start > WINDOW_MS) {
-      hits.set(ip, { count: 1, start: now });
-    } else {
-      rec.count += 1;
-      if (rec.count > MAX_HITS) {
-        return NextResponse.json({ error: "Too many requests. Try again later." }, { status: 429 });
-      }
-    }
+  const ip = getClientIp(req);
 
-    const { name, email, linkedin, message, honeypot } = await req.json();
-
-    // Honeypot (bots)
-    if (honeypot) {
-      return NextResponse.json({ ok: true });
-    }
-
-    // Validation
-    if (!name || !email || !message) {
-      return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
-    }
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email));
-    if (!emailOk) {
-      return NextResponse.json({ error: "Invalid email." }, { status: 400 });
-    }
-
-    // Minimal payload
-    const payload = {
-      name: String(name).slice(0, 200),
-      email: String(email).slice(0, 200),
-      linkedin: String(linkedin || "").slice(0, 300),
-      message: String(message).slice(0, 5000),
-      at: new Date().toISOString(),
-      from: ip,
-    };
+  // Extract + normalize
+  const name = (body.name ?? "").trim();
+  const email = (body.email ?? "").trim().toLowerCase();
+  const message = (body.message ?? "").trim();
+  const linkedin = (body.linkedin ?? "").trim();
 
 
-    // Server log 
+
+  // Validation
+  if (!name || !email || !message) {
+    return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+  }
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: "Invalid email." }, { status: 400 });
+  }
+
+  const payload = {
+    name: name.slice(0, 200),
+    email: email.slice(0, 200),
+    linkedin: linkedin.slice(0, 300),
+    message: message.slice(0, 5000),
+    at: new Date().toISOString(),
+    from: ip,
+  };
+
+  try {
+    const saved = await prisma.contactMessage.create({
+      data: {
+        name: payload.name,
+        email: payload.email,
+        linkedin: payload.linkedin || null,
+        message: payload.message,
+        ip: payload.from,
+        createdAt: new Date(payload.at),
+      },
+      select: { id: true },
+    });
+
+    // Server log
     console.log("[contact] submission", payload);
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, id: saved.id });
   } catch (err) {
     console.error("[contact] error", err);
     return NextResponse.json({ error: "Server error." }, { status: 500 });
