@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic"; // avoid any caching of POST
 export const runtime = "nodejs";
@@ -26,8 +27,19 @@ export async function POST(req: NextRequest) {
       select: { id: true }
     });
 
-    return NextResponse.json({ ok: true, id: sub.id });
+    return NextResponse.json({ ok: true, id: String(sub.id) });
   } catch (err) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
+      const again = await prisma.subscription.findUnique({
+        where: { email },
+        select: { id: true },
+      });
+      return NextResponse.json({ ok: true, id: again?.id, existed: true });
+    }
+
     console.error("Subscribe error:", err);
     return NextResponse.json({ error: "Server Unavailable" }, { status: 500 });
   }
